@@ -5,6 +5,8 @@ import { FormattedMessage } from 'react-intl';
 import CheckBox from '../widgets/checkbox.jsx';
 import VisiblePassword from '../widgets/visible-password.jsx';
 
+import ApiMethods from '/src/lib/kruzhok-api';
+
 export default class LoginView extends React.Component {
   constructor(props) {
     super(props);

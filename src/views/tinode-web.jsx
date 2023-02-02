@@ -29,6 +29,7 @@ import LocalStorageUtil from '../lib/local-storage.js';
 import HashNavigation from '../lib/navigation.js';
 import { secondsToTime } from '../lib/strformat.js'
 import { updateFavicon } from '../lib/utils.js';
+import KruzhokApi from "../lib/kruzhok-api";
 
 // Sound to play on message received.
 const POP_SOUND = new Audio('audio/msg.m4a');
@@ -311,6 +312,16 @@ class TinodeWeb extends React.Component {
 
       // Parse and save the hash navigation params.
       const parsedNav = HashNavigation.parseUrlHash(window.location.hash);
+      console.log(parsedNav, "parsed nav");
+
+      if(parsedNav.params.one_time_token) {
+        KruzhokApi.oneLogin(parsedNav.params.one_time_token).then((res) => {
+          return KruzhokApi.fetchChatSecret()
+        }).then((res) => {
+          const [login, password] = atob(res.secret).split(":");
+          this.handleLoginRequest(login, password);
+        })
+      }
 
       // Read contacts from cache.
       this.resetContactList();
@@ -475,6 +486,8 @@ class TinodeWeb extends React.Component {
   // Handle for hash navigation (hashchange) event: update state.
   handleHashRoute() {
     const hash = HashNavigation.parseUrlHash(window.location.hash);
+    console.log(window.location.hash)
+    console.log(hash);
     // Start with panel parameters.
     const newState = {
       infoPanel: hash.params.info,

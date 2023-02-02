@@ -1,4 +1,6 @@
 const TerserPlugin = require('terser-webpack-plugin');
+// const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
 const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
 
@@ -7,6 +9,10 @@ module.exports = (env, argv) => {
   return {
     entry: {
       index: path.resolve(__dirname, 'src/index.js'),
+    },
+    devServer: {
+      port: 3000,
+      historyApiFallback: true,
     },
     devtool: 'source-map',
     module: {
@@ -23,7 +29,7 @@ module.exports = (env, argv) => {
     output: {
       path: path.resolve(__dirname, 'umd'),
       filename: `[name].${mode}.js`,
-      publicPath: '/umd/'
+      publicPath: '/umd'
     },
     optimization: {
       minimize: (mode === 'prod'),
@@ -61,6 +67,15 @@ module.exports = (env, argv) => {
           { from: `node_modules/tinode-sdk/umd/tinode.${mode}.js`, to: `tinode.${mode}.js` },
         ],
       }),
+      new webpack.EnvironmentPlugin({
+        'NODE_ENV': 'development',
+        'API_BACKEND_BASE_PATH': 'http://localhost:8000/api',
+      }),
+      // new HtmlWebpackPlugin({
+      //   template: mode === 'prod' ? "src/index.html" : 'src/index-dev.html',
+      //   filename: "index.html",
+      //   inject: false
+      // })
     ],
     externals: {
       // 'fix-webm-duration': 'fixWebmDuration',

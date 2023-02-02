@@ -28,7 +28,7 @@ const messages = allMessages[htmlLang];
 
 // Set lang attribute of the HTML element: <html lang="XX">
 document.getElementsByTagName('html')[0].setAttribute('lang', htmlLang);
-
+console.log("UPDATED!")
 ReactDOM.render(
   <React.StrictMode>
     <IntlProvider locale={language} messages={messages} textComponent={React.Fragment}>

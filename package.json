@@ -2,13 +2,14 @@
   "name": "tinode-webapp",
   "description": "Tinode messenger for the web",
   "version": "0.20.4",
-
   "repository": {
     "type": "git",
     "url": "https://github.com/tinode/example-react-js.git"
   },
   "scripts": {
     "build": "npm run vers && npm run build:css && npm run extract && npm run build:i18n && npm run build:prod && npm run build:dev",
+    "watch": "webpack serve --mode development",
+    "watch:dev": "webpack-dev-server --port 3000 --mode development",
     "build:css": "postcss css/base.css > css/base.min.css",
     "build:dev": "webpack --mode development",
     "build:prod": "webpack --mode production",
@@ -67,6 +68,7 @@
   "author": "Tinode Authors <info@tinode.co>",
   "license": "Apache-2.0",
   "dependencies": {
+    "axios": "^1.2.5",
     "firebase": "^9.6.7",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -84,10 +86,12 @@
     "copy-webpack-plugin": "^10.0.0",
     "cssnano": "^5.0.6",
     "glob": "^8.0.3",
+    "html-webpack-plugin": "^5.5.0",
     "mkdirp": "^1.0.4",
     "postcss": "^8.3.2",
     "postcss-cli": "^9.0.2",
     "webpack": "^5.38.1",
-    "webpack-cli": "^4.7.2"
+    "webpack-cli": "^4.7.2",
+    "webpack-dev-server": "^4.11.1"
   }
 }
