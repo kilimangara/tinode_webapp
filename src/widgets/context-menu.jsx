@@ -1,6 +1,7 @@
 // Context Menu: popup/dropdown menu.
 import React from 'react';
 import { injectIntl, defineMessages } from 'react-intl';
+import KruzhokApi from "../lib/kruzhok-api";
 
 import { REM_SIZE } from '../config.js';
 
@@ -320,6 +321,21 @@ class ContextMenu extends React.Component {
         id: 'member_block',
         title: formatMessage(messages.block),
         handler: this.topicPermissionSetter.bind(this, '-JP')
+      },
+      'member_full_ban': {
+        id: 'member_full_ban',
+        title: 'Заблокировать',
+        handler: (params, errorHandler) => {
+          console.log(params, "BAN!!")
+          KruzhokApi.usersByTinodeUids([params.user]).then((users) => {
+            console.log(users);
+            return KruzhokApi.banUser(users[0].uuid);
+          }).catch(err => {
+            if (errorHandler) {
+                errorHandler(err.message, 'err');
+            }
+          })
+        }
       },
       'member_unblock': {
         id: 'member_unblock',

@@ -40,9 +40,19 @@ const Methods = {
         authorize(data.access, data.refresh);
         return data;
     },
-    async banUser(userId) {
+    async usersByTinodeUids(uids) {
+        const { data } = await axiosInstance.request({
+            url: 'chat/users/search',
+            method: 'post',
+            data: {
+                uids: uids,
+            }
+        })
+        return data;
+    },
+    async banUser(userUuid) {
         await axiosInstance.request({
-            url: `auth/management/profile/${userId}/`,
+            url: `auth/management/profile/${userUuid}`,
             method: 'delete',
         });
     },

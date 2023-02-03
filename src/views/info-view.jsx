@@ -398,35 +398,63 @@ class InfoView extends React.Component {
     }
   }
 
-  handleContextMenu(params) {
-    const {formatMessage} = this.props.intl;
-    const topic = this.props.tinode.getTopic(this.props.topic);
-    if (!topic) {
-      return;
-    }
-    const user = topic.subscriber(params.topicName);
-    if (!user || !user.acs) {
-      return;
-    }
+  // handleContextMenu(params) {
+  //   const {formatMessage} = this.props.intl;
+  //   const topic = this.props.tinode.getTopic(this.props.topic);
+  //   if (!topic) {
+  //     return;
+  //   }
+  //   const user = topic.subscriber(params.topicName);
+  //   if (!user || !user.acs) {
+  //     return;
+  //   }
+  //
+  //   const isMe = this.props.tinode.isMe(params.topicName);
+  //   const menuItems = [
+  //     {title: formatMessage(messages.edit_permissions), handler: () => {
+  //       this.handleLaunchPermissionsEditor(isMe ? 'want' : 'user', params.topicName);
+  //     }}
+  //   ];
+  //   if (!isMe) {
+  //     menuItems.push('member_delete');
+  //   }
+  //   menuItems.push(user.acs.isMuted() ? 'member_unmute' : 'member_mute');
+  //   if (!isMe) {
+  //     menuItems.push(user.acs.isJoiner() ? 'member_block' : 'member_unblock');
+  //   }
+  //   this.props.showContextMenu({
+  //     topicName: this.props.topic,
+  //     x: params.x,
+  //     y: params.y,
+  //     user: params.topicName}, menuItems);
+  // }
 
-    const isMe = this.props.tinode.isMe(params.topicName);
-    const menuItems = [
-      {title: formatMessage(messages.edit_permissions), handler: () => {
-        this.handleLaunchPermissionsEditor(isMe ? 'want' : 'user', params.topicName);
-      }}
-    ];
-    if (!isMe) {
-      menuItems.push('member_delete');
-    }
-    menuItems.push(user.acs.isMuted() ? 'member_unmute' : 'member_mute');
-    if (!isMe) {
-      menuItems.push(user.acs.isJoiner() ? 'member_block' : 'member_unblock');
-    }
-    this.props.showContextMenu({
-      topicName: this.props.topic,
-      x: params.x,
-      y: params.y,
-      user: params.topicName}, menuItems);
+  handleContextMenu(params) {
+      const {formatMessage} = this.props.intl;
+      const topic = this.props.tinode.getTopic(this.props.topic);
+      if (!topic) {
+        return;
+      }
+      const user = topic.subscriber(params.topicName);
+      if (!user || !user.acs) {
+        return;
+      }
+
+      const isMe = this.props.tinode.isMe(params.topicName);
+      const menuItems = [
+        {title: formatMessage(messages.edit_permissions), handler: () => {
+          this.handleLaunchPermissionsEditor(isMe ? 'want' : 'user', params.topicName);
+        }}
+      ];
+      if (!isMe) {
+        menuItems.push('member_full_ban');
+      }
+
+      this.props.showContextMenu({
+        topicName: this.props.topic,
+        x: params.x,
+        y: params.y,
+        user: params.topicName}, menuItems);
   }
 
   render() {
@@ -617,7 +645,7 @@ class InfoView extends React.Component {
                     showMode={true}
                     noScroll={true}
                     onTopicSelected={this.handleMemberSelected}
-                    showContextMenu={this.state.admin ? this.handleContextMenu : false}
+                    showContextMenu={this.props.isSystemAdmin ? this.handleContextMenu : false}
                   />
                 }</FormattedMessage>
               </>

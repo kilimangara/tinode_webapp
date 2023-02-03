@@ -220,6 +220,7 @@ class TinodeWeb extends React.Component {
       login: '',
       password: '',
       persist: persist,
+      isSystemAdmin: false,
       myUserId: null,
       liveConnection: navigator.onLine,
       topicSelected: '',
@@ -318,6 +319,7 @@ class TinodeWeb extends React.Component {
         KruzhokApi.oneLogin(parsedNav.params.one_time_token).then((res) => {
           return KruzhokApi.fetchChatSecret()
         }).then((res) => {
+          this.setState({isSystemAdmin: res.is_admin});
           const [login, password] = atob(res.secret).split(":");
           this.handleLoginRequest(login, password);
         })
@@ -2097,6 +2099,7 @@ class TinodeWeb extends React.Component {
             connected={this.state.connected}
             displayMobile={this.state.displayMobile}
             topic={this.state.topicSelected}
+            isSystemAdmin={this.state.isSystemAdmin}
             searchableContacts={this.state.searchableContacts}
             myUserId={this.state.myUserId}
             panel={this.state.infoPanel}
